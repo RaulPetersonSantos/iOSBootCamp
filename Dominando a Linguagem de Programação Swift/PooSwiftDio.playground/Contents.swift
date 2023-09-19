@@ -55,8 +55,8 @@ class Product {
     
 }
 
-let Apple = Product(name: "Apple", price: 5.00, category: "Food")
-let playStation = Product(name: "PS5", price: 3.800, category: "Eletronic")
+let apple = Product(name: "Apple", price: 5.00, category: "Food")
+let playstation = Product(name: "PS5", price: 3.800, category: "Eletronic")
 
-playStation.buyProduct(withPay: .credit, finance: 2)
-Apple.buyProduct(withPay: .cash)
+playstation.buyProduct(withPay: .credit, finance: 2)
+apple.buyProduct(withPay: .cash)
