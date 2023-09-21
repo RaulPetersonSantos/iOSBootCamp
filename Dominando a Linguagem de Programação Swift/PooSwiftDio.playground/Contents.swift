@@ -1,6 +1,5 @@
 import UIKit
 
-var greeting = "Hello, playground"
 
 enum PayMethod {
     case cash
@@ -21,9 +20,9 @@ enum PayMethod {
 
 class Product {
     
-    private var name: String = ""
-    private var price: Double = 0.0
-    private var category: String = ""
+     var name: String = ""
+     var price: Double = 0.0
+     var category: String = ""
 
     init(name: String, price: Double, category: String) {
         self.name = name
@@ -31,32 +30,57 @@ class Product {
         self.category = category
     }
     
-    func buyProduct(withPay: PayMethod, finance: Int? = nil)  {
+}
+
+protocol PayMethodProtocol {
+    func buyProduct(selectedProduct: Product, withPay: PayMethod, finance: Int?)
+}
+
+class Person: PayMethodProtocol {
+    
+    private var name: String = ""
+    private var age: Int = 0
+    
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+       }
+    
+    func buyProduct(selectedProduct: Product, withPay: PayMethod, finance: Int? = nil) {
         
-        var message = """
-                   Obrigado por realizar a compra, segue a nota fiscal
-                   =================
-                   Produto: \(name)
-                   Preço: \(String(format: "%.2f", price))
-                   Categoria: \(category)
-                   Forma de Pagamento: \(withPay.description)
-                   """
+        let priceString = String(selectedProduct.price).replacingOccurrences(of: ".", with: ",")
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.numberStyle = .decimal
+        let formatedPrice = formatter.number(from: priceString)?.doubleValue
+      
+        if let formated = formatedPrice {
+            var message = """
+                       Obrigado por realizar a compra, segue a nota fiscal
+                       =================
+                       Produto: \(selectedProduct.name)
+                       Preço: \(formated)
+                       Categoria: \(selectedProduct.category)
+                       Forma de Pagamento: \(withPay.description)
+                       """
 
-               if withPay == .credit, let finance = finance {
-                   message += "\nParcelamento: \(finance)"
-               }
+                   if withPay == .credit, let finance = finance {
+                       message += "\nParcelamento: \(finance)"
+                   }
 
-               message += "\n================="
+                   message += "\n================="
 
-               print(message)
+                   print(message)
+        }
+     
     }
     
-  
     
 }
 
 let apple = Product(name: "Apple", price: 5.00, category: "Food")
-let playstation = Product(name: "PS5", price: 3.800, category: "Eletronic")
+let oranges = Product(name: "Oranges", price: 10.00, category: "Food")
+let person = Person(name: "Robson Moreira", age: 18)
 
-playstation.buyProduct(withPay: .credit, finance: 2)
-apple.buyProduct(withPay: .cash)
+person.buyProduct(selectedProduct: apple, withPay: .cash)
+person.buyProduct(selectedProduct: oranges, withPay: .credit, finance: 2)
