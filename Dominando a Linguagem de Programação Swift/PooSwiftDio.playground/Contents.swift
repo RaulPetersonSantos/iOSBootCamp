@@ -20,9 +20,9 @@ enum PayMethod {
 
 class Product {
     
-     var name: String = ""
-     var price: Double = 0.0
-     var category: String = ""
+    private (set) var name: String = ""
+    private (set) var price: Double = 0.0
+    private (set) var category: String = ""
 
     init(name: String, price: Double, category: String) {
         self.name = name
@@ -53,7 +53,7 @@ class Person: PayMethodProtocol {
         formatter.locale = Locale(identifier: "pt_BR")
         formatter.numberStyle = .decimal
         let formatedPrice = formatter.number(from: priceString)?.doubleValue
-      
+        
         if let formated = formatedPrice {
             var message = """
                        Obrigado por realizar a compra, segue a nota fiscal
